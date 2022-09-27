@@ -19,6 +19,7 @@ namespace Persistence.Context
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<GitHubProfile> GitHubProfiles { get; set; }
 
 
         public BaseDbContext(DbContextOptions dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
@@ -100,6 +101,16 @@ namespace Persistence.Context
                 a.Property(p => p.AuthenticatorType).HasColumnName("AuthenticatorType");
                 a.HasMany(p => p.UserOperationClaims);
                 a.HasMany(p => p.RefreshTokens);
+
+            });
+
+            modelBuilder.Entity<GitHubProfile>(a =>
+            {
+                a.ToTable("GitHubProfiles").HasKey(k => k.Id);
+                a.Property(p => p.Id).HasColumnName("Id");
+                a.Property(p => p.GitHubUrl).HasColumnName("GitHubUrl");
+                a.Property(p => p.UserId).HasColumnName("UserId");
+                a.HasOne(p => p.User);
 
             });
 
