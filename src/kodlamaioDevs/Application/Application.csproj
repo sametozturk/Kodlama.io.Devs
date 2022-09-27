@@ -18,7 +18,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Features\GitHubProfiles\Queries\" />
 	  <Folder Include="Features\Languages\Constants\" />
 	  <Folder Include="Features\Technologies\Constants\" />
 	</ItemGroup>
