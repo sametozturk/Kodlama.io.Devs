@@ -25,7 +25,7 @@ namespace WebAPI.Controllers
         {
             AuthorizationLoginCommand authorizationLoginCommand = new() { UserForLoginDto = userForLoginDto }; //ipAddress = getIpAddress() };
             AuthLoginDto result = await Mediator.Send(authorizationLoginCommand);
-            return Ok(result.AccessToken);
+            return Ok(result);
         }
     }
 }

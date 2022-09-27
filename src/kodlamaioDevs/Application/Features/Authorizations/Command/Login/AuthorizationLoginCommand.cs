@@ -27,13 +27,15 @@ namespace Application.Features.Authorizations.Command.Login
             private readonly IUserOperationClaimRepository _userOperationClaimRepository;
             private readonly ITokenHelper _tokenHelper;
             private readonly AuthorizationsBusinessRules _authorizationsBusinessRules;
+            private readonly IRefreshTokenRepository _refreshTokenRepository;
 
-            public AuthorizationLoginCommandHandler(IUserRepository userRepository, IUserOperationClaimRepository userOperationClaimRepository, ITokenHelper tokenHelper, AuthorizationsBusinessRules authorizationsBusinessRules)
+            public AuthorizationLoginCommandHandler(IUserRepository userRepository, IUserOperationClaimRepository userOperationClaimRepository, ITokenHelper tokenHelper, AuthorizationsBusinessRules authorizationsBusinessRules,IRefreshTokenRepository refreshTokenRepository)
             {
                 _userRepository = userRepository;
                 _userOperationClaimRepository = userOperationClaimRepository;
                 _tokenHelper = tokenHelper;
                 _authorizationsBusinessRules = authorizationsBusinessRules;
+                _refreshTokenRepository = refreshTokenRepository;
             }
 
             public async Task<AuthLoginDto> Handle(AuthorizationLoginCommand request, CancellationToken cancellationToken)
@@ -46,13 +48,13 @@ namespace Application.Features.Authorizations.Command.Login
                 IPaginate<UserOperationClaim> userOperationClaims = await _userOperationClaimRepository.GetListAsync(u => u.UserId == user.Id, include: u => u.Include(u => u.OperationClaim));
 
                 AccessToken accessToken = _tokenHelper.CreateToken(user, userOperationClaims.Items.Select(u => u.OperationClaim).ToList());
-                RefreshToken refreshToken = _tokenHelper.CreateRefreshToken(user,Dns.GetHostByName(Dns.GetHostName()).AddressList[1].ToString());  
-                //refresh token tabloya insert atılcak?
+                RefreshToken refreshToken = _tokenHelper.CreateRefreshToken(user,Dns.GetHostByName(Dns.GetHostName()).AddressList[1].ToString());
+                _refreshTokenRepository.AddAsync(refreshToken);
 
                 AuthLoginDto authLoginDto = new()
                 {
                     AccessToken = accessToken,
-                    //  ??RefreshToken = refreshToken??
+                    //RefreshToken = refreshToken
                 };
                 return authLoginDto;
             }
