@@ -14,7 +14,7 @@ namespace Application.Features.Authorizations.Command.Register
             RuleFor(r => r.UserForRegisterDto.Password).NotEmpty();
             RuleFor(r => r.UserForRegisterDto.FirstName).NotEmpty();
             RuleFor(r => r.UserForRegisterDto.LastName).NotEmpty();
-            RuleFor(r => r.UserForRegisterDto.Password).MinimumLength(8);
+            RuleFor(r => r.UserForRegisterDto.Password).MinimumLength(5);
             RuleFor(r => r.UserForRegisterDto.FirstName).MinimumLength(2);
             RuleFor(r => r.UserForRegisterDto.LastName).MinimumLength(2);
             RuleFor(r => r.UserForRegisterDto.Email).NotNull().EmailAddress();

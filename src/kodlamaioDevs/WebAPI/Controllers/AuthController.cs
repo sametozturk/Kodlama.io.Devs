@@ -2,6 +2,7 @@
 using Application.Features.Authorizations.Command.Register;
 using Application.Features.Authorizations.Dtos;
 using Core.Security.Dtos;
+using Core.Security.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,15 +16,19 @@ namespace WebAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserForRegisterDto userForRegisterDto)
         {
-            AuthorizationRegisterCommand authorizationRegisterCommand = new() { UserForRegisterDto = userForRegisterDto };
-            AuthRegisterDto result = await Mediator.Send(authorizationRegisterCommand);
+            AuthorizationRegisterCommand authorizationRegisterCommand = new() { UserForRegisterDto = userForRegisterDto, IpAdress = GetIpAdress() };
+            RegisteredDto result = await Mediator.Send(authorizationRegisterCommand);
             return Created("", result.AccessToken);
         }
-
+        private void setRefreshTokenToCookie(RefreshToken refreshToken)
+        {
+            CookieOptions cookieOptions = new() { HttpOnly = true, Expires = DateTime.Now.AddDays(7) };
+            Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
+        }
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] UserForLoginDto userForLoginDto)
         {
-            AuthorizationLoginCommand authorizationLoginCommand = new() { UserForLoginDto = userForLoginDto }; //ipAddress = getIpAddress() };
+            AuthorizationLoginCommand authorizationLoginCommand = new() { UserForLoginDto = userForLoginDto };
             AuthLoginDto result = await Mediator.Send(authorizationLoginCommand);
             return Ok(result);
         }
