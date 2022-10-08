@@ -18,6 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Features\OperationClaims\Queries\GetByIdClaim\" />
 	  <Folder Include="Features\Languages\Constants\" />
 	  <Folder Include="Features\Technologies\Constants\" />
 	</ItemGroup>

@@ -1,7 +1,9 @@
 ﻿using Application.Features.Authorizations.Rules;
+using Application.Features.Claims.Rules;
 using Application.Features.GitHubProfiles.Rules;
 using Application.Features.Languages.Rules;
 using Application.Features.Technologies.Rules;
+using Application.Features.UserOperationClaims.Rules;
 using Application.Services.AuthService;
 using Core.Application.Pipelines.Validation;
 using FluentValidation;
@@ -28,6 +30,8 @@ namespace Application
             services.AddScoped<TechnologyBusinessRules>();
             services.AddScoped<AuthorizationsBusinessRules>();
             services.AddScoped<GitHubProfileBusinessRules>();
+            services.AddScoped<OperationClaimBusinessRules>();
+            services.AddScoped<UserOperationClaimBusinessRules>();
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
