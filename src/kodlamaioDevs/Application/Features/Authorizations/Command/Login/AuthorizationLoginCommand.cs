@@ -48,8 +48,8 @@ namespace Application.Features.Authorizations.Command.Login
                 IPaginate<UserOperationClaim> userOperationClaims = await _userOperationClaimRepository.GetListAsync(u => u.UserId == user.Id, include: u => u.Include(u => u.OperationClaim));
 
                 AccessToken accessToken = _tokenHelper.CreateToken(user, userOperationClaims.Items.Select(u => u.OperationClaim).ToList());
-                RefreshToken refreshToken = _tokenHelper.CreateRefreshToken(user,Dns.GetHostByName(Dns.GetHostName()).AddressList[1].ToString());
-                _refreshTokenRepository.AddAsync(refreshToken);
+                //RefreshToken refreshToken = _tokenHelper.CreateRefreshToken(user,Dns.GetHostByName(Dns.GetHostName()).AddressList[1].ToString());
+                //_refreshTokenRepository.AddAsync(refreshToken);
 
                 AuthLoginDto authLoginDto = new()
                 {

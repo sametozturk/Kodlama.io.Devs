@@ -1,6 +1,7 @@
 ﻿using Application.Features.Languages.Models;
 using Application.Services.Repositories;
 using AutoMapper;
+using Core.Application.Pipelines.Authorization;
 using Core.Application.Requests;
 using Core.Persistence.Paging;
 using Domain.Entities;
@@ -13,9 +14,11 @@ using System.Threading.Tasks;
 
 namespace Application.Features.Languages.Queries.GetListLanguage
 {
-    public class GetListLanguageQuery : IRequest<LanguageListModel>
+    public class GetListLanguageQuery : IRequest<LanguageListModel>,ISecuredRequest
     {
         public PageRequest PageRequest { get; set; }
+
+        public string[] Roles { get; } = {"Admin"};
 
         public class GetListLanguageQueryHandler : IRequestHandler<GetListLanguageQuery, LanguageListModel>
         {
